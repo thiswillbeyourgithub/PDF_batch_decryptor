@@ -13,12 +13,27 @@ from send2trash import send2trash
 
 
 def p(m: str) -> None:
+    """
+    Print a message to the console and append it to a log file.
+
+    Args:
+        m (str): The message to be printed and logged.
+    """
     tqdm.write(m)
     with open("logs.txt", "a") as f:
         f.write(str(int(time.time())) + ":  " + m)
         f.write("\n")
 
 def is_encrypted(pdf_file: str) -> bool:
+    """
+    Check if a PDF file is encrypted.
+
+    Args:
+        pdf_file (str): The path to the PDF file.
+
+    Returns:
+        tuple: A boolean indicating if the file is encrypted and the output of pdfinfo.
+    """
     result = subprocess.run(
         ['pdfinfo', str(pdf_file)],
         capture_output=True,
@@ -34,6 +49,12 @@ def is_encrypted(pdf_file: str) -> bool:
         return True, val
 
 def ask() -> bool:
+    """
+    Ask the user if they want to decrypt a file.
+
+    Returns:
+        bool: True if the user wants to decrypt, False otherwise.
+    """
     ans = input("Do you want to decrypt it? (y/n)\n>")
     if ans == "y":
         p(f"User said yes: '{ans}'")
@@ -43,6 +64,18 @@ def ask() -> bool:
         return False
 
 def decrypt(pdf_file: PosixPath) -> str:
+    """
+    Decrypt a PDF file using qpdf.
+
+    Args:
+        pdf_file (PosixPath): The path to the encrypted PDF file.
+
+    Returns:
+        str: The output of the decryption process.
+
+    Raises:
+        AssertionError: If the file is not encrypted or if the decryption fails.
+    """
     assert is_encrypted(pdf_file)[0]
 
     decr_path = str(pdf_file) + "_decrypted"
@@ -77,6 +110,15 @@ def decrypt(pdf_file: PosixPath) -> str:
 
 
 def duplicate_file(pdf_file: PosixPath) -> None:
+    """
+    Duplicate a PDF file to a trash directory.
+
+    Args:
+        pdf_file (PosixPath): The path to the PDF file to be duplicated.
+
+    Raises:
+        AssertionError: If the file already exists in the trash directory and the user doesn't confirm.
+    """
     p(f"Duplicating {pdf_file}")
     trash_list = [f.name for f in Path("./encrypted_pdf_to_trash/").iterdir()]
     if pdf_file.name in trash_list:
@@ -93,6 +135,15 @@ def duplicate_file(pdf_file: PosixPath) -> None:
     p(f"Done duplicating {pdf_file}")
 
 def get_pdf_info(path: str) -> dict:
+    """
+    Process PDF files in a given directory, checking for encryption and optionally decrypting them.
+
+    Args:
+        path (str): The directory path containing PDF files to process.
+
+    Returns:
+        dict: A dictionary containing information about each processed PDF file.
+    """
     p(f"\nStarting script")
     pdf_info = {}
     encr_status = {}
