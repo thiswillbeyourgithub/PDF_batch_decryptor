@@ -20,7 +20,7 @@ Super quick and dirty script to call "qpdf --decrypt" on all PDF files that `pdf
 
 4. The script will:
    - Check each PDF file for encryption
-   - Ask if you want to decrypt each encrypted file (unless it's in a "TOUT drive")
+   - Ask if you want to decrypt each encrypted file
    - Decrypt the files you choose to decrypt
    - Move the original encrypted files to a trash directory
    - Generate a JSON file with information about the processed PDFs

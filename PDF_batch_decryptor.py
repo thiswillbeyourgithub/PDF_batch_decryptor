@@ -160,7 +160,7 @@ def get_pdf_info(path: str) -> dict:
             p(f"Is encrypted: {key}:\n{val}\n\n")
 
             pdf_info["decryption_output"] = None
-            if "TOUT drive - " in str(pdf_file) or ask():
+            if ask():
                 pdf_info[key]["action"] = True
                 duplicate_file(pdf_file=pdf_file)
                 try:
