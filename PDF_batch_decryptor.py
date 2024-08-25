@@ -11,6 +11,7 @@ import time
 from send2trash import send2trash
 
 
+Path("./encrypted_pdf_to_trash/").mkdir(exist_ok=True)
 
 def p(m: str) -> None:
     """
