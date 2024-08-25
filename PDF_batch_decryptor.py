@@ -174,7 +174,7 @@ def get_pdf_info(path: str) -> dict:
             else:
                 pdf_info[key]["action"] = False
 
-    with open("pdf_info.{int(time.time())}.json", "w") as f:
+    with open(f"pdf_info.{int(time.time())}.json", "w") as f:
         f.write(json.dumps(pdf_info, indent=2))
     return pdf_info
 
